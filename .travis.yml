@@ -1,0 +1,12 @@
+nguage: python
+python:
+  - "2.7"
+  - "3.5"
+install:
+  - pip install -r requirements.txt
+  - pip install coveralls
+script:
+  coverage run -m unittest discover tests
+  #coverage run --source=pycool -m unittest tests
+after_success:
+  coveralls
