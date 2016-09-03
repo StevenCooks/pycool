@@ -1,0 +1,10 @@
+*.py[cod]
+
+# Unit test / coverage reports
+.coverage
+coverage-html
+.tox
+nosetests.xml
+@test_*
+
+.DS_Store
