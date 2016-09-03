@@ -1,3 +1,5 @@
+sudo:
+  false
 nguage: python
 python:
   - "2.7"
