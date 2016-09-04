@@ -9,8 +9,6 @@ install:
 cache:
   pip
 script:
-  #coverage run -m unittest discover tests
-  make test
-  #coverage run --source=pycool -m unittest tests
+  coverage run -m unittest discover tests
 after_success:
   coveralls
