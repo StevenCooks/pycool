@@ -1,4 +1,18 @@
+# Byte-compiled / optimized / DLL files
+__pychache__/
 *.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+build/
+dist/
+eggs/
+lib/
 
 # Unit test / coverage reports
 .coverage
@@ -8,7 +22,6 @@ nosetests.xml
 @test_*
 
 # readthedocs
-build
-docs/build
+docs/_build
 
 .DS_Store
