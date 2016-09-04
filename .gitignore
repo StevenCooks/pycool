@@ -2,6 +2,7 @@
 __pychache__/
 *.py[cod]
 *$py.class
+.python-version
 
 # C extensions
 *.so
@@ -13,6 +14,8 @@ build/
 dist/
 eggs/
 lib/
+bin/
+include/
 
 # Unit test / coverage reports
 .coverage
@@ -25,3 +28,4 @@ nosetests.xml
 docs/_build
 
 .DS_Store
+pip-selfcheck.json
