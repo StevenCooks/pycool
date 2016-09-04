@@ -7,6 +7,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install coveralls
+cache:
+  pip
 script:
   coverage run -m unittest discover tests
   #coverage run --source=pycool -m unittest tests
