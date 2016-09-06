@@ -9,6 +9,13 @@ class RemovalService(object):
         if os.path.isfile(filename):
             os.remove(filename)
 
+    def done(self):
+        return True
+
+    @classmethod
+    def finish(cls):
+        return 0
+
 
 class UploadService(object):
     """A upload service."""

@@ -16,14 +16,14 @@
 from unittest import TestCase
 from unittest import mock
 from unittest.mock import patch
+from unittest.mock import MagicMock
 
 from pycool.example.util import rm
 from pycool.example.util import RemovalService, UploadService
 
 
 class ExampleTestCase(TestCase):
-    """Test module method.
-    Patch builtin module to modify behavior of buitlin methods."""
+    """Test module method. Patch module to mock behavior of builtin method."""
 
     @patch('pycool.example.util.os.path')
     @patch('pycool.example.util.os')
@@ -63,9 +63,26 @@ class RemovalServiceTestCase(TestCase):
         reference.rm("any path")
         mock_os.remove.assert_called_with("any path")
 
+    def test_mock_classmethod(self):
+        self.assertEqual(RemovalService.finish(), 0)
+        RemovalService.finish = MagicMock(return_value=1)
+        self.assertEqual(RemovalService.finish(), 1)
+
+    @patch('pycool.example.util.RemovalService.finish', return_value=1)
+    def test_patch_classmethod(self, mock_finish):
+        self.assertEqual(RemovalService.finish(), 1)
+
 
 class UploadServiceTestCase(TestCase):
-    """Test object method: Patch another private module's object method."""
+    """Test object method: Patch object method.
+
+    Example:
+        from modulename import Classname
+
+        @patch.object(Classname, 'funcname')
+        def test(self, mock_funcname):
+            self.assertTrue(mock_funcname.called)
+    """
 
     @patch.object(RemovalService, 'rm')
     def test_upload_complete(self, mock_rm):
@@ -84,6 +101,41 @@ class UploadServiceTestCase(TestCase):
 
         # check that it called `rm` method of `removal_service` instance
         removal_service.rm.assert_called_with("filename")
+
+    def test_upload_patch_as_context_manager(self):
+        # patch can be used as context manager besides as decorator
+        with patch.object(RemovalService, 'rm') as mock_rm:
+            removal_service = RemovalService()
+            upload_service = UploadService(removal_service)
+            upload_service.upload_complete("filename")
+            mock_rm.assert_called_with("filename")
+
+    def test_magicmock_instance_level(self):
+        """MagicMock only mocks method attached to a specific instance."""
+        rm_service = RemovalService()
+        self.assertTrue(rm_service.done())
+
+        rm_service.done = MagicMock(return_value=False)
+        self.assertFalse(rm_service.done())
+
+        rm_service_2 = RemovalService()
+        self.assertTrue(rm_service_2.done())
+
+    def test_patch_object_class_level(self):
+        """@patch.object will patch all object's function all.
+           See above testcase for comparison."""
+        rm_service = RemovalService()
+        self.assertTrue(rm_service.done())
+
+        with patch.object(RemovalService, 'done', return_value=False):
+            rm_service_2 = RemovalService()
+            self.assertFalse(rm_service_2.done())
+
+            rm_service_3 = RemovalService()
+            self.assertFalse(rm_service_3.done())
+
+        rm_service_4 = RemovalService()
+        self.assertTrue(rm_service_4.done())
 
 
 class UploadServiceImportTestCase(TestCase):
