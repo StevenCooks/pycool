@@ -3,16 +3,18 @@
 #
 # - Mock an item where it is used, not where it came from.
 #
-# 1) ExampleTestCase       : patch builtin module to patch builtin methods
-# 2) RemovalServiceTestCase: patch module function
-# 3) UploadServiceTestCase : patch module's object(instance) method
+# 1) ExampleTestCase          : patch builtin module to patch builtin methods
+# 2) RemovalServiceTestCase   : patch module function
+# 3) UploadServiceTestCase    : patch module's object(instance) method
+# 4) UploadServiceMockInstance: create_autospec
 #
 # Reference:
-#
 # [1] https://www.toptal.com/python/an-introduction-to-mocking-in-python
+# [2] https://docs.python.org/3/library/unittest.mock.html#autospeccing
 #
 ###############################################################################
 from unittest import TestCase
+from unittest import mock
 from unittest.mock import patch
 
 from pycool.example.util import rm
@@ -96,3 +98,15 @@ class UploadServiceImportTestCase(TestCase):
         removal_service = RemovalService()
         UploadService(removal_service).upload_complete("filename")
         mock_rm.assert_called_with("filename")
+
+
+class UploadServiceMockInstance(TestCase):
+    """Test object method: Mock instance with create_autospec."""
+
+    def test_upload_mock_instance(self):
+
+        mock_removal_service = mock.create_autospec(RemovalService)
+
+        reference = UploadService(mock_removal_service)
+        reference.upload_complete("upload complete")
+        mock_removal_service.rm.assert_called_with("upload complete")
