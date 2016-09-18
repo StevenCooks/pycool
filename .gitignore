@@ -3,6 +3,7 @@ __pychache__/
 *.py[cod]
 *$py.class
 .python-version
+.idea/
 
 # C extensions
 *.so
