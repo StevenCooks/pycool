@@ -7,10 +7,21 @@
 # 2) RemovalServiceTestCase   : patch module function
 # 3) UploadServiceTestCase    : patch module's object(instance) method
 # 4) UploadServiceMockInstance: create_autospec
+# 5) Mock
 #
 # Reference:
 # [1] https://www.toptal.com/python/an-introduction-to-mocking-in-python
 # [2] https://docs.python.org/3/library/unittest.mock.html#autospeccing
+#
+#
+# How to test: make sure you are using Python 3
+#   pycool $> source ./bin/activate
+#
+#   pycool $> make
+# Or,
+#   pycool $> make test
+# Or,
+#   coverage run -m unittest discover tests
 #
 ###############################################################################
 from unittest import TestCase
@@ -162,3 +173,12 @@ class UploadServiceMockInstance(TestCase):
         reference = UploadService(mock_removal_service)
         reference.upload_complete("upload complete")
         mock_removal_service.rm.assert_called_with("upload complete")
+
+
+class MockUnitTests(TestCase):
+
+    @patch("pycool.example.util.RemovalService.MY_MODULE_CONSTANT", 20)
+    def test_mock_const_in_module(self):
+        """How to mock a module level constant."""
+        rm = RemovalService()
+        self.assertEqual(rm.MY_MODULE_CONSTANT, 20)

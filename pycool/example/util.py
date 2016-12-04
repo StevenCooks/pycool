@@ -5,6 +5,8 @@ import os.path
 class RemovalService(object):
     """A service for removing objects from the filesystem."""
 
+    MY_MODULE_CONSTANT = 1
+
     def rm(self, filename):
         if os.path.isfile(filename):
             os.remove(filename)

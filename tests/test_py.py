@@ -5,7 +5,7 @@
 #
 #   pycool $> make
 # Or,
-#   pycool $> make run
+#   pycool $> make test
 # Or,
 #   coverage run -m unittest discover tests
 ###############################################################################
